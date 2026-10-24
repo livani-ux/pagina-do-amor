@@ -1,146 +1,298 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login do Administrador - Teste</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: system-ui, sans-serif;
-      background-color: #f4f6f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Valentina ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-deep: #090B16;
+            --bg-card: #121629;
+            --accent-purple: #8B5CF6;
+            --accent-blue: #3B82F6;
+            --text-light: #F3F4F6;
+            --text-gold: #FACE15;
+            --border-glow: rgba(139, 92, 246, 0.4);
+        }
 
-    .login-card {
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 360px;
-    }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .login-card h2 {
-      margin-top: 0;
-      color: #000080;
-      text-align: center;
-    }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%);
+        }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+        .container {
+            width: 100%;
+            max-width: 520px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            text-align: center;
+        }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      font-size: 14px;
-    }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
 
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+        .welcome-title {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background-color: #000080;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .subtitle {
+            color: #9CA3AF;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
 
-    .btn-submit:hover {
-      background-color: #000055;
-    }
+        .word-display {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
 
-    .mensagem-erro {
-      color: red;
-      font-size: 14px;
-      margin-top: 10px;
-      text-align: center;
-      display: none;
-    }
+        .letter-box {
+            width: 44px;
+            height: 52px;
+            border: 2px solid var(--accent-purple);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: rgba(139, 92, 246, 0.1);
+        }
 
-    /* Painel do Admin (Invisível no início) */
-    .painel-admin {
-      display: none;
-      text-align: center;
-    }
-  </style>
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 1.5rem;
+        }
+
+        .key-btn {
+            background: #1E2640;
+            color: white;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 10px 0;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .key-btn:hover { background: var(--accent-purple); }
+
+        .hint-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Calendário */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin: 1rem 0;
+        }
+
+        .day-name { font-weight: bold; color: var(--accent-blue); font-size: 0.8rem; }
+        
+        .day-btn {
+            background: #1E2640;
+            border: 1px solid #374151;
+            color: white;
+            padding: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .day-btn.selected {
+            background: var(--accent-purple);
+            border-color: white;
+            font-weight: bold;
+        }
+
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
-  <!-- FORMULÁRIO DE LOGIN -->
-  <div class="login-card" id="area-login">
-    <h2>Área do Admin</h2>
-    <form id="loginForm">
-      <div class="form-group">
-        <label for="email">E-mail (Gmail):</label>
-        <input type="email" id="email" placeholder="seu-email@gmail.com" required>
-      </div>
+<div class="container">
+    <!-- Tela Inicial -->
+    <div id="screen-game">
+        <h1 class="welcome-title">Bem-vinda, Valentina! ✨</h1>
+        <p class="subtitle">Adivinhe as palavras em inglês para destravar uma surpresa especial.</p>
+        
+        <div class="hint-box" id="hint-text">
+            Loading...
+        </div>
 
-      <div class="form-group">
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" placeholder="Digite sua senha" required>
-      </div>
+        <div class="word-display" id="word-slots"></div>
 
-      <button type="submit" class="btn-submit">Entrar</button>
-      <div id="erro" class="mensagem-erro">E-mail ou senha incorretos!</div>
-    </form>
-  </div>
+        <div class="keyboard" id="keyboard"></div>
+    </div>
 
-  <!-- PAINEL EXIBIDO APÓS O LOGIN -->
-  <div class="login-card painel-admin" id="area-admin">
-    <h2>Bem-vindo, Victor! 🎉</h2>
-    <p>Login efetuado com sucesso (modo de teste).</p>
-    <button class="btn-submit" onclick="sair()">Sair</button>
-  </div>
+    <!-- Tela Final -->
+    <div id="screen-final" class="hidden">
+        <h2 style="color: var(--text-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">Você Venceu! 🎉</h2>
+        <p style="margin-bottom: 1.5rem;">Agora é com você! Escolha o que vamos fazer e a data em Dezembro:</p>
 
-  <script>
-    // DADOS PARA TESTE (Em um projeto real com banco de dados, isso fica escondido no servidor)
-    const EMAIL_TESTE = "admin@gmail.com";
-    const SENHA_TESTE = "123456";
+        <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+            <button class="day-btn" id="opt-cinema" onclick="selectOption('Cinema e Sushi')" style="flex:1; padding: 12px;">🎬 Cinema + Sushi</button>
+            <button class="day-btn" id="opt-sushi" onclick="selectOption('Só Sushi')" style="flex:1; padding: 12px;">🍣 Só Sushi</button>
+        </div>
 
-    const loginForm = document.getElementById('loginForm');
-    const areaLogin = document.getElementById('area-login');
-    const areaAdmin = document.getElementById('area-admin');
-    const msgErro = document.getElementById('erro');
+        <h3>Escolha um dia em Dezembro 📅</h3>
+        <div class="calendar-grid">
+            <div class="day-name">D</div><div class="day-name">S</div><div class="day-name">T</div>
+            <div class="day-name">Q</div><div class="day-name">Q</div><div class="day-name">S</div><div class="day-name">S</div>
+            <!-- Dias vazios do início do mês -->
+            <div></div><div></div>
+            <!-- Dias 1 a 31 -->
+            <script>
+                for(let i=1; i<=31; i++){
+                    document.write(`<button class="day-btn" onclick="selectDay(${i}, this)">${i}</button>`);
+                }
+            </script>
+        </div>
 
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault(); // Impede o recarregamento da página
+        <button class="btn-action" onclick="sendWhatsApp()">Confirmar e Enviar no WhatsApp 💬</button>
+    </div>
+</div>
 
-      const emailDigitado = document.getElementById('email').value;
-      const senhaDigitada = document.getElementById('senha').value;
+<script>
+    const levels = [
+        { word: "MOVIE", hint: "💌 'Estar ao seu lado faz qualquer momento simples parecer cena de cinema. O tempo voa quando estou com você.'" },
+        { word: "OR", hint: "💌 'Dizem que a vida é feita de escolhas, mas estar com você sempre vai ser a minha única certeza.'" },
+        { word: "SUSHI", hint: "💌 'Amo te ver feliz, dar risada com você e compartilhar momentos saborosos juntos.'" },
+        { word: "BOTH", hint: "💌 'Porque quando o assunto é ter você por perto, eu não quero escolher só um... eu quero TUDO!'" }
+    ];
 
-      // Validação simples dos dados de teste
-      if (emailDigitado === EMAIL_TESTE && senhaDigitada === SENHA_TESTE) {
-        msgErro.style.display = 'none';
-        areaLogin.style.display = 'none';
-        areaAdmin.style.display = 'block';
-      } else {
-        msgErro.style.display = 'block';
-      }
-    });
+    let currentLevel = 0;
+    let guessedLetters = [];
+    let selectedOption = "";
+    let selectedDay = null;
 
-    function sair() {
-      areaAdmin.style.display = 'none';
-      areaLogin.style.display = 'block';
-      document.getElementById('senha').value = '';
+    function initLevel() {
+        const level = levels[currentLevel];
+        document.getElementById('hint-text').innerText = level.hint;
+        guessedLetters = [];
+        renderWord();
+        renderKeyboard();
     }
-  </script>
 
+    function renderWord() {
+        const level = levels[currentLevel];
+        const container = document.getElementById('word-slots');
+        container.innerHTML = '';
+        
+        let won = true;
+        for (let letter of level.word) {
+            const box = document.createElement('div');
+            box.className = 'letter-box';
+            if (guessedLetters.includes(letter)) {
+                box.innerText = letter;
+            } else {
+                box.innerText = '';
+                won = false;
+            }
+            container.appendChild(box);
+        }
+
+        if (won) {
+            setTimeout(() => {
+                currentLevel++;
+                if (currentLevel < levels.length) {
+                    initLevel();
+                } else {
+                    showFinalScreen();
+                }
+            }, 600);
+        }
+    }
+
+    function renderKeyboard() {
+        const kb = document.getElementById('keyboard');
+        kb.innerHTML = '';
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+        alphabet.forEach(letra => {
+            const btn = document.createElement('button');
+            btn.className = 'key-btn';
+            btn.innerText = letra;
+            btn.onclick = () => {
+                if (!guessedLetters.includes(letra)) {
+                    guessedLetters.push(letra);
+                    renderWord();
+                }
+            };
+            kb.appendChild(btn);
+        });
+    }
+
+    function showFinalScreen() {
+        document.getElementById('screen-game').classList.add('hidden');
+        document.getElementById('screen-final').classList.remove('hidden');
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
+
+    function selectOption(opt) {
+        selectedOption = opt;
+        document.getElementById('opt-cinema').classList.remove('selected');
+        document.getElementById('opt-sushi').classList.remove('selected');
+        if(opt === 'Cinema e Sushi') document.getElementById('opt-cinema').classList.add('selected');
+        if(opt === 'Só Sushi') document.getElementById('opt-sushi').classList.add('selected');
+    }
+
+    function selectDay(day, btn) {
+        selectedDay = day;
+        document.querySelectorAll('.calendar-grid .day-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    }
+
+    function sendWhatsApp() {
+        if (!selectedOption || !selectedDay) {
+            alert('Por favor, escolha a opção do rolê e um dia no calendário!');
+            return;
+        }
+        const text = `Oii! Ganhei o jogo! ✨%0A%0AOpção escolhida: *${selectedOption}*%0ADia escolhido em Dezembro: *Dia ${selectedDay}*%0A%0ABora? 😉`;
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    initLevel();
+</script>
 </body>
 </html>
