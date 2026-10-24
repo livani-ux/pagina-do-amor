@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Valentina ❤️</title>
+    <title>A Mente do Victor para a Valentina ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -28,9 +28,24 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Corações flutuantes ao fundo */
+        .heart-particle {
+            position: fixed;
+            color: rgba(139, 92, 246, 0.25);
+            font-size: 1.2rem;
+            animation: floatUp 6s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
         .container {
@@ -42,62 +57,106 @@
             padding: 2rem 1.5rem;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             text-align: center;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            animation: cardAppear 0.8s ease-out;
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         h1, h2, h3 { font-family: 'Outfit', sans-serif; }
 
         .welcome-title {
             color: var(--accent-blue);
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.7rem;
+            margin-bottom: 0.3rem;
         }
 
-        .step-indicator {
+        .subtitle {
             color: #9CA3AF;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
         }
 
-        .declaration-card {
+        /* Grade de Categorias */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .cat-btn {
+            background: #1E2640;
+            color: white;
+            border: 1px solid #374151;
+            padding: 16px 10px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cat-btn span { font-size: 1.5rem; }
+
+        .cat-btn:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .cat-btn.viewed {
+            border-color: var(--text-gold);
+        }
+
+        /* Caixa de Exibição do Texto */
+        .content-box {
             background: rgba(59, 130, 246, 0.08);
             border: 1px solid rgba(59, 130, 246, 0.3);
             padding: 1.25rem;
             border-radius: 14px;
-            margin-bottom: 1.5rem;
-            font-size: 1.05rem;
+            min-height: 120px;
+            text-align: left;
+            font-size: 0.98rem;
             line-height: 1.6;
             color: #E2E8F0;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option-btn {
-            background: #1E2640;
-            color: white;
-            border: 1px solid #374151;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
-            justify-content: space-between;
         }
 
-        .option-btn:hover {
-            background: var(--accent-purple);
-            border-color: var(--accent-purple);
-            transform: translateY(-2px);
+        .back-btn {
+            background: transparent;
+            color: #9CA3AF;
+            border: 1px solid #4B5563;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            color: white;
+            border-color: white;
+        }
+
+        /* Seção Final do Convite */
+        .final-section {
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.2rem;
         }
 
         .btn-action {
@@ -110,9 +169,14 @@
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 1rem;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.02);
         }
 
         .hidden { display: none; }
@@ -120,111 +184,99 @@
 </head>
 <body>
 
+<!-- Corações ao fundo -->
+<script>
+    for (let i = 0; i < 15; i++) {
+        let heart = document.createElement('div');
+        heart.className = 'heart-particle';
+        heart.innerText = ['❤️', '✨', '💜', '🌹'][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        document.body.appendChild(heart);
+    }
+</script>
+
 <div class="container">
-    <!-- Tela do Quiz Interativo -->
-    <div id="screen-quiz">
-        <h1 class="welcome-title">Para Valentina ✨</h1>
-        <div class="step-indicator" id="step-counter">Passo 1 de 5</div>
-        
-        <div class="declaration-card" id="declaration-text">
-            Carregando declaração...
+    <!-- Tela Principal: Menu de Categorias -->
+    <div id="screen-menu">
+        <h1 class="welcome-title">A Mente do Victor 🧠✨</h1>
+        <p class="subtitle">Toque em cada tópico para descobrir o que passa na minha cabeça sobre você, Valentina:</p>
+
+        <div class="categories-grid">
+            <button class="cat-btn" id="btn-olhos" onclick="openCategory('olhos')">
+                <span>👁️</span> Olhos
+            </button>
+            <button class="cat-btn" id="btn-vestido" onclick="openCategory('vestido')">
+                <span>👗</span> Vestido
+            </button>
+            <button class="cat-btn" id="btn-estudos" onclick="openCategory('estudos')">
+                <span>📚</span> Esforçada
+            </button>
+            <button class="cat-btn" id="btn-buque" onclick="openCategory('buque')">
+                <span>💐</span> O Buquê
+            </button>
         </div>
 
-        <div class="options-container" id="options-box">
-            <!-- Os botões de escolha entram aqui via JavaScript -->
+        <!-- Caixa onde aparece o texto da categoria selecionada -->
+        <div class="content-box" id="display-text" style="color: #9CA3AF; text-align: center; justify-content: center;">
+            👈 Clique em um dos tópicos acima para ler!
         </div>
-    </div>
 
-    <!-- Tela Final -->
-    <div id="screen-final" class="hidden">
-        <h2 style="color: var(--text-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">Você Completou! 🎉</h2>
-        <p style="margin-bottom: 1.5rem; color: #D1D5DB; line-height: 1.6;">
-            "Mesmo com a camisa do Flamengo, você continua sendo a pessoa mais incrível pra mim. Mal posso esperar para o nosso próximo momento! ❤️"
-        </p>
+        <div class="hidden" id="nav-back-container">
+            <button class="back-btn" onclick="goBackToMenu()">⬅️ Escolher outro tópico</button>
+        </div>
 
-        <a class="btn-action" href="https://api.whatsapp.com/send?text=Oii! Terminei o quiz e li todas as mensagens! Amei demais ❤️✨" target="_blank">
-            Mandar mensagem no WhatsApp 💬
-        </a>
+        <!-- Seção Final / Convite -->
+        <div class="final-section">
+            <p style="font-size: 0.9rem; color: #D1D5DB; margin-bottom: 1rem; line-height: 1.5;">
+                Já faz 1 ano que a gente se conhece e nunca saímos... Quero muito mudar isso. Qual dia você está livre? ❤️
+            </p>
+            <a class="btn-action" href="https://api.whatsapp.com/send?text=Oii! Li tudo na Mente do Victor... e sobre o nosso rolê, eu tô livre no dia: " target="_blank">
+                Responder no WhatsApp 💬
+            </a>
+        </div>
     </div>
 </div>
 
 <script>
-    const quizSteps = [
-        {
-            text: "Lembro até hoje de uma das nossas primeiras conversas, quando você ia comprar um vestido... O que eu acho desse detalhe?",
-            options: [
-                { text: "Acho fofo que você guardou isso até hoje!", correct: true },
-                { text: "Você nem lembra de nada.", correct: false }
-            ]
-        },
-        {
-            text: "Admiro demais o quanto você é inteligente, dedicada e focada. O que você mais faz na vida que eu admiro?",
-            options: [
-                { text: "Estuda e se esforça muito em tudo o que faz.", correct: true },
-                { text: "Fica o dia todo assistindo série.", correct: false }
-            ]
-        },
-        {
-            text: "E sobre os seus olhos... qual é a verdade sobre eles?",
-            options: [
-                { text: "Eu me perco completamente neles toda vez que te olho.", correct: true },
-                { text: "Nada demais.", correct: false }
-            ]
-        },
-        {
-            text: "Um dos maiores acertos da minha vida foi te dar um buquê. Mas qual foi o meu pensamento imediato quando te vi com ele?",
-            options: [
-                { text: "Por que carambas ela tá com a camisa do Flamengo? Estragou tudo! 😂", correct: true },
-                { text: "Nossa, que roupa perfeita.", correct: false }
-            ]
-        },
-        {
-            text: "Brincadeiras à parte... o que aconteceu quando te dei aquele buquê?",
-            options: [
-                { text: "Acho que me apaixonei de novo. Por mim, te daria um todo santo mês! 💐", correct: true },
-                { text: "Foi só um presente normal.", correct: false }
-            ]
+    const categoryData = {
+        olhos: "👁️ **Olhos:** Eu acho os seus olhos tão lindos... A primeira vez que me lembro de ver eles, pareciam universos inteiros. Sinceramente, eu poderia passar o dia todo olhando para você sem me cansar.",
+        vestido: "👗 **Vestido:** Lembra das nossas primeiras conversas? A gente conversou sobre várias coisas, inclusive sobre aquele vestido que você ia comprar. Pois é... eu guardo a lembrança desse vestido até hoje.",
+        estudos: "📚 **Esforçada:** Você me motiva todo dia a ser um cara melhor e provavelmente rico! Afinal, acredito que para ter uma garota do seu nível ao meu lado, vou precisar ralar e gastar um bom dinheiro. Você é extremamente estudiosa e dedicada, e eu admiro muito isso.",
+        buquê: "💐 **O Buquê:** Um dos maiores acertos da minha vida foi te dar um buquê. Mas, confessa... quando te vi com ele, a primeira coisa que eu pensei foi: *'Por que carambas ela tá com a camisa do Flamengo? Estragou tudo!'* 😂 Brincadeiras à parte, acho que me apaixonei de novo quando te vi com ele. Por mim, eu te daria um todo santo mês."
+    };
+
+    let viewedCategories = [];
+
+    function openCategory(categoryKey) {
+        const textBox = document.getElementById('display-text');
+        textBox.innerHTML = categoryData[categoryKey];
+        textBox.style.color = "#E2E8F0";
+        textBox.style.textAlign = "left";
+        textBox.style.justifyContent = "flex-start";
+
+        document.getElementById('nav-back-container').classList.remove('hidden');
+
+        // Efeito de confete ao abrir
+        confetti({ particleCount: 30, spread: 50, origin: { y: 0.6 } });
+
+        // Marca como visto
+        if (!viewedCategories.includes(categoryKey)) {
+            viewedCategories.push(categoryKey);
+            document.getElementById(`btn-olhos`).classList.add('viewed');
         }
-    ];
-
-    let currentStep = 0;
-
-    function loadStep() {
-        if (currentStep >= quizSteps.length) {
-            showFinalScreen();
-            return;
-        }
-
-        const step = quizSteps[currentStep];
-        document.getElementById('step-counter').innerText = `Passo ${currentStep + 1} de ${quizSteps.length}`;
-        document.getElementById('declaration-text').innerText = step.text;
-
-        const optionsBox = document.getElementById('options-box');
-        optionsBox.innerHTML = '';
-
-        step.options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerHTML = `<span>${opt.text}</span> ➔`;
-            btn.onclick = () => {
-                if (opt.correct) {
-                    currentStep++;
-                    loadStep();
-                } else {
-                    alert('Opa, pensa bem nessa resposta! 😉 Tenta a outra opção.');
-                }
-            };
-            optionsBox.appendChild(btn);
-        });
     }
 
-    function showFinalScreen() {
-        document.getElementById('screen-quiz').classList.add('hidden');
-        document.getElementById('screen-final').classList.remove('hidden');
-        confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
-    }
+    function goBackToMenu() {
+        const textBox = document.getElementById('display-text');
+        textBox.innerHTML = "👈 Clique em um dos tópicos acima para ler!";
+        textBox.style.color = "#9CA3AF";
+        textBox.style.textAlign = "center";
+        textBox.style.justifyContent = "center";
 
-    loadStep();
+        document.getElementById('nav-back-container').classList.add('hidden');
+    }
 </script>
 </body>
 </html>
