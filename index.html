@@ -60,20 +60,21 @@
 
         .word-display {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
             margin: 1.5rem 0;
+            flex-wrap: wrap;
         }
 
         .letter-box {
-            width: 44px;
-            height: 52px;
+            width: 40px;
+            height: 48px;
             border: 2px solid var(--accent-purple);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             background: rgba(139, 92, 246, 0.1);
         }
@@ -105,32 +106,7 @@
             text-align: left;
             margin-bottom: 1rem;
             font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        /* Calendário */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin: 1rem 0;
-        }
-
-        .day-name { font-weight: bold; color: var(--accent-blue); font-size: 0.8rem; }
-        
-        .day-btn {
-            background: #1E2640;
-            border: 1px solid #374151;
-            color: white;
-            padding: 8px 0;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .day-btn.selected {
-            background: var(--accent-purple);
-            border-color: white;
-            font-weight: bold;
+            line-height: 1.5;
         }
 
         .btn-action {
@@ -143,7 +119,9 @@
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .hidden { display: none; }
@@ -152,13 +130,13 @@
 <body>
 
 <div class="container">
-    <!-- Tela Inicial -->
+    <!-- Tela Inicial / Jogo -->
     <div id="screen-game">
-        <h1 class="welcome-title">Bem-vinda, Valentina! ✨</h1>
-        <p class="subtitle">Adivinhe as palavras em inglês para destravar uma surpresa especial.</p>
+        <h1 class="welcome-title">Para Valentina ✨</h1>
+        <p class="subtitle">Adivinhe as palavras em inglês para descobrir cada mensagem.</p>
         
         <div class="hint-box" id="hint-text">
-            Loading...
+            Carregando...
         </div>
 
         <div class="word-display" id="word-slots"></div>
@@ -168,44 +146,28 @@
 
     <!-- Tela Final -->
     <div id="screen-final" class="hidden">
-        <h2 style="color: var(--text-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">Você Venceu! 🎉</h2>
-        <p style="margin-bottom: 1.5rem;">Agora é com você! Escolha o que vamos fazer e a data em Dezembro:</p>
+        <h2 style="color: var(--text-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">Você Zerou! 🎉</h2>
+        <p style="margin-bottom: 1.5rem; color: #D1D5DB; line-height: 1.6;">
+            "Mesmo com a camisa do Flamengo, você continua sendo a pessoa mais incrível pra mim. Mal posso esperar pelo nosso encontro! ❤️"
+        </p>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
-            <button class="day-btn" id="opt-cinema" onclick="selectOption('Cinema e Sushi')" style="flex:1; padding: 12px;">🎬 Cinema + Sushi</button>
-            <button class="day-btn" id="opt-sushi" onclick="selectOption('Só Sushi')" style="flex:1; padding: 12px;">🍣 Só Sushi</button>
-        </div>
-
-        <h3>Escolha um dia em Dezembro 📅</h3>
-        <div class="calendar-grid">
-            <div class="day-name">D</div><div class="day-name">S</div><div class="day-name">T</div>
-            <div class="day-name">Q</div><div class="day-name">Q</div><div class="day-name">S</div><div class="day-name">S</div>
-            <!-- Dias vazios do início do mês -->
-            <div></div><div></div>
-            <!-- Dias 1 a 31 -->
-            <script>
-                for(let i=1; i<=31; i++){
-                    document.write(`<button class="day-btn" onclick="selectDay(${i}, this)">${i}</button>`);
-                }
-            </script>
-        </div>
-
-        <button class="btn-action" onclick="sendWhatsApp()">Confirmar e Enviar no WhatsApp 💬</button>
+        <a class="btn-action" href="https://api.whatsapp.com/send?text=Oii! Vi todas as mensagens do joguinho! Amei demais ❤️✨" target="_blank">
+            Mandar mensagem no WhatsApp 💬
+        </a>
     </div>
 </div>
 
 <script>
     const levels = [
-        { word: "MOVIE", hint: "💌 'Estar ao seu lado faz qualquer momento simples parecer cena de cinema. O tempo voa quando estou com você.'" },
-        { word: "OR", hint: "💌 'Dizem que a vida é feita de escolhas, mas estar com você sempre vai ser a minha única certeza.'" },
-        { word: "SUSHI", hint: "💌 'Amo te ver feliz, dar risada com você e compartilhar momentos saborosos juntos.'" },
-        { word: "BOTH", hint: "💌 'Porque quando o assunto é ter você por perto, eu não quero escolher só um... eu quero TUDO!'" }
+        { word: "DRESS", hint: "💌 'Lembro até hoje de uma das nossas primeiras conversas, quando você ia comprar um vestido... guardo esse detalhe até agora.'" },
+        { word: "SMART", hint: "💌 'Admiro demais o quanto você é inteligente, dedicada e esforçada em tudo o que faz na sua vida.'" },
+        { word: "EYES", hint: "💌 'E não posso deixar de falar dos seus olhos... me perco completamente neles toda vez que te olho.'" },
+        { word: "FLAMENGO", hint: "💌 'Um dos maiores acertos da minha vida foi te dar um buquê. Mas quando te vi com ele, só pensei: *Por que carambas ela tá com essa camisa? Estragou tudo!* 😂⚽'" },
+        { word: "FLOWERS", hint: "💌 'Brincadeiras à parte... acho que me apaixonei de novo quando te vi com aquele buquê. Por mim, eu te daria um todo santo mês.'" }
     ];
 
     let currentLevel = 0;
     let guessedLetters = [];
-    let selectedOption = "";
-    let selectedDay = null;
 
     function initLevel() {
         const level = levels[currentLevel];
@@ -266,30 +228,7 @@
     function showFinalScreen() {
         document.getElementById('screen-game').classList.add('hidden');
         document.getElementById('screen-final').classList.remove('hidden');
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-    }
-
-    function selectOption(opt) {
-        selectedOption = opt;
-        document.getElementById('opt-cinema').classList.remove('selected');
-        document.getElementById('opt-sushi').classList.remove('selected');
-        if(opt === 'Cinema e Sushi') document.getElementById('opt-cinema').classList.add('selected');
-        if(opt === 'Só Sushi') document.getElementById('opt-sushi').classList.add('selected');
-    }
-
-    function selectDay(day, btn) {
-        selectedDay = day;
-        document.querySelectorAll('.calendar-grid .day-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-    }
-
-    function sendWhatsApp() {
-        if (!selectedOption || !selectedDay) {
-            alert('Por favor, escolha a opção do rolê e um dia no calendário!');
-            return;
-        }
-        const text = `Oii! Ganhei o jogo! ✨%0A%0AOpção escolhida: *${selectedOption}*%0ADia escolhido em Dezembro: *Dia ${selectedDay}*%0A%0ABora? 😉`;
-        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
     }
 
     initLevel();
