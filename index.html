@@ -52,61 +52,52 @@
             margin-bottom: 0.5rem;
         }
 
-        .subtitle {
+        .step-indicator {
             color: #9CA3AF;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .declaration-card {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 1.25rem;
+            border-radius: 14px;
             margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #E2E8F0;
         }
 
-        .word-display {
+        .options-container {
             display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .letter-box {
-            width: 40px;
-            height: 48px;
-            border: 2px solid var(--accent-purple);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            font-weight: 800;
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .keyboard {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-top: 1.5rem;
-        }
-
-        .key-btn {
+        .option-btn {
             background: #1E2640;
             color: white;
             border: 1px solid #374151;
-            border-radius: 6px;
-            padding: 10px 0;
-            font-weight: 700;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .key-btn:hover { background: var(--accent-purple); }
-
-        .hint-box {
-            background: rgba(59, 130, 246, 0.1);
-            border-left: 4px solid var(--accent-blue);
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: left;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
+        .option-btn:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
         }
 
         .btn-action {
@@ -119,7 +110,7 @@
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             text-decoration: none;
             display: inline-block;
         }
@@ -130,108 +121,110 @@
 <body>
 
 <div class="container">
-    <!-- Tela Inicial / Jogo -->
-    <div id="screen-game">
+    <!-- Tela do Quiz Interativo -->
+    <div id="screen-quiz">
         <h1 class="welcome-title">Para Valentina ✨</h1>
-        <p class="subtitle">Adivinhe as palavras em inglês para descobrir cada mensagem.</p>
+        <div class="step-indicator" id="step-counter">Passo 1 de 5</div>
         
-        <div class="hint-box" id="hint-text">
-            Carregando...
+        <div class="declaration-card" id="declaration-text">
+            Carregando declaração...
         </div>
 
-        <div class="word-display" id="word-slots"></div>
-
-        <div class="keyboard" id="keyboard"></div>
+        <div class="options-container" id="options-box">
+            <!-- Os botões de escolha entram aqui via JavaScript -->
+        </div>
     </div>
 
     <!-- Tela Final -->
     <div id="screen-final" class="hidden">
-        <h2 style="color: var(--text-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">Você Zerou! 🎉</h2>
+        <h2 style="color: var(--text-gold); font-size: 1.8rem; margin-bottom: 0.5rem;">Você Completou! 🎉</h2>
         <p style="margin-bottom: 1.5rem; color: #D1D5DB; line-height: 1.6;">
-            "Mesmo com a camisa do Flamengo, você continua sendo a pessoa mais incrível pra mim. Mal posso esperar pelo nosso encontro! ❤️"
+            "Mesmo com a camisa do Flamengo, você continua sendo a pessoa mais incrível pra mim. Mal posso esperar para o nosso próximo momento! ❤️"
         </p>
 
-        <a class="btn-action" href="https://api.whatsapp.com/send?text=Oii! Vi todas as mensagens do joguinho! Amei demais ❤️✨" target="_blank">
+        <a class="btn-action" href="https://api.whatsapp.com/send?text=Oii! Terminei o quiz e li todas as mensagens! Amei demais ❤️✨" target="_blank">
             Mandar mensagem no WhatsApp 💬
         </a>
     </div>
 </div>
 
 <script>
-    const levels = [
-        { word: "DRESS", hint: "💌 'Lembro até hoje de uma das nossas primeiras conversas, quando você ia comprar um vestido... guardo esse detalhe até agora.'" },
-        { word: "SMART", hint: "💌 'Admiro demais o quanto você é inteligente, dedicada e esforçada em tudo o que faz na sua vida.'" },
-        { word: "EYES", hint: "💌 'E não posso deixar de falar dos seus olhos... me perco completamente neles toda vez que te olho.'" },
-        { word: "FLAMENGO", hint: "💌 'Um dos maiores acertos da minha vida foi te dar um buquê. Mas quando te vi com ele, só pensei: *Por que carambas ela tá com essa camisa? Estragou tudo!* 😂⚽'" },
-        { word: "FLOWERS", hint: "💌 'Brincadeiras à parte... acho que me apaixonei de novo quando te vi com aquele buquê. Por mim, eu te daria um todo santo mês.'" }
+    const quizSteps = [
+        {
+            text: "Lembro até hoje de uma das nossas primeiras conversas, quando você ia comprar um vestido... O que eu acho desse detalhe?",
+            options: [
+                { text: "Acho fofo que você guardou isso até hoje!", correct: true },
+                { text: "Você nem lembra de nada.", correct: false }
+            ]
+        },
+        {
+            text: "Admiro demais o quanto você é inteligente, dedicada e focada. O que você mais faz na vida que eu admiro?",
+            options: [
+                { text: "Estuda e se esforça muito em tudo o que faz.", correct: true },
+                { text: "Fica o dia todo assistindo série.", correct: false }
+            ]
+        },
+        {
+            text: "E sobre os seus olhos... qual é a verdade sobre eles?",
+            options: [
+                { text: "Eu me perco completamente neles toda vez que te olho.", correct: true },
+                { text: "Nada demais.", correct: false }
+            ]
+        },
+        {
+            text: "Um dos maiores acertos da minha vida foi te dar um buquê. Mas qual foi o meu pensamento imediato quando te vi com ele?",
+            options: [
+                { text: "Por que carambas ela tá com a camisa do Flamengo? Estragou tudo! 😂", correct: true },
+                { text: "Nossa, que roupa perfeita.", correct: false }
+            ]
+        },
+        {
+            text: "Brincadeiras à parte... o que aconteceu quando te dei aquele buquê?",
+            options: [
+                { text: "Acho que me apaixonei de novo. Por mim, te daria um todo santo mês! 💐", correct: true },
+                { text: "Foi só um presente normal.", correct: false }
+            ]
+        }
     ];
 
-    let currentLevel = 0;
-    let guessedLetters = [];
+    let currentStep = 0;
 
-    function initLevel() {
-        const level = levels[currentLevel];
-        document.getElementById('hint-text').innerText = level.hint;
-        guessedLetters = [];
-        renderWord();
-        renderKeyboard();
-    }
-
-    function renderWord() {
-        const level = levels[currentLevel];
-        const container = document.getElementById('word-slots');
-        container.innerHTML = '';
-        
-        let won = true;
-        for (let letter of level.word) {
-            const box = document.createElement('div');
-            box.className = 'letter-box';
-            if (guessedLetters.includes(letter)) {
-                box.innerText = letter;
-            } else {
-                box.innerText = '';
-                won = false;
-            }
-            container.appendChild(box);
+    function loadStep() {
+        if (currentStep >= quizSteps.length) {
+            showFinalScreen();
+            return;
         }
 
-        if (won) {
-            setTimeout(() => {
-                currentLevel++;
-                if (currentLevel < levels.length) {
-                    initLevel();
-                } else {
-                    showFinalScreen();
-                }
-            }, 600);
-        }
-    }
+        const step = quizSteps[currentStep];
+        document.getElementById('step-counter').innerText = `Passo ${currentStep + 1} de ${quizSteps.length}`;
+        document.getElementById('declaration-text').innerText = step.text;
 
-    function renderKeyboard() {
-        const kb = document.getElementById('keyboard');
-        kb.innerHTML = '';
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
-        alphabet.forEach(letra => {
+        const optionsBox = document.getElementById('options-box');
+        optionsBox.innerHTML = '';
+
+        step.options.forEach(opt => {
             const btn = document.createElement('button');
-            btn.className = 'key-btn';
-            btn.innerText = letra;
+            btn.className = 'option-btn';
+            btn.innerHTML = `<span>${opt.text}</span> ➔`;
             btn.onclick = () => {
-                if (!guessedLetters.includes(letra)) {
-                    guessedLetters.push(letra);
-                    renderWord();
+                if (opt.correct) {
+                    currentStep++;
+                    loadStep();
+                } else {
+                    alert('Opa, pensa bem nessa resposta! 😉 Tenta a outra opção.');
                 }
             };
-            kb.appendChild(btn);
+            optionsBox.appendChild(btn);
         });
     }
 
     function showFinalScreen() {
-        document.getElementById('screen-game').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.add('hidden');
         document.getElementById('screen-final').classList.remove('hidden');
-        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
     }
 
-    initLevel();
+    loadStep();
 </script>
 </body>
 </html>
